@@ -6,7 +6,7 @@
 
 <p align="center">
   <a href="https://github.com/ishandutta2007/Awesome-Awesome-Awesome"><img src="https://img.shields.io/badge/Awesome-%E2%9C%94-blueviolet?style=flat-square&logo=github" alt="Awesome"/></a><a href="https://discord.gg/jc4xtF58Ve"><img src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="Discord" /></a>
-  <a href="https://github.com/ishandutta2007/Awesome-Android-Compatibility-Layer"><img src="https://img.shields.io/github/stars/ishandutta2007/Awesome-Android-Compatibility-Layer?style=flat-square&logo=github" alt="GitHub Stars"/></a>
+  <a href="https://github.com/ishandutta2007/Awesome-Android-Compatibility-Layer"><img src="https://img.shields.io/github/stars/ishandutta2007/Awesome-Android-Compatibility-Layer?style=flat-square&logo=github" alt="GitHub_Stars"/></a>
   <a href="https://github.com/ishandutta2007/Awesome-Android-Compatibility-Layer/fork"><img src="https://img.shields.io/github/forks/ishandutta2007/Awesome-Android-Compatibility-Layer?style=flat-square&logo=github" alt="GitHub Forks"/></a>
   <a href="https://github.com/ishandutta2007/Awesome-Android-Compatibility-Layer/blob/main/LICENSE"><img src="https://img.shields.io/github/license/ishandutta2007/Awesome-Android-Compatibility-Layer?style=flat-square" alt="License"/></a>
   <a href="https://github.com/ishandutta2007"><img alt="GitHub followers" src="https://img.shields.io/github/followers/ishandutta2007?label=Follow" /></a>
@@ -58,54 +58,54 @@ Below is a detailed comparison of commercial Android emulators and enterprise co
 
 ## 🔓 Open-Source GitHub Projects
 
-The open-source Android compatibility ecosystem features container-based runtimes, API translation layers, and low-level library loaders. Listed below, **sorted by GitHub Star Count (descending)**:
+The open-source Android compatibility ecosystem features container-based runtimes, API translation layers, and low-level library loaders. Listed below, **sorted by GitHub Stars_Count (descending)**:
 
 ### 📦 Container-Based Android on Linux
 
-- [![GitHub stars](https://img.shields.io/github/stars/waydroid/waydroid?style=social&color=white)](https://github.com/waydroid/waydroid/stargazers) **[Waydroid](https://github.com/waydroid/waydroid)**  
+- [![GitHub_Stars](https://img.shields.io/github/stars/waydroid/waydroid?style=social&color=white)](https://github.com/waydroid/waydroid/stargazers) **[Waydroid](https://github.com/waydroid/waydroid)**  
   **The premier open-source containerized Android compatibility layer for Linux (successor to Anbox).**  
   * **License**: GPL-3.0  
   * **Architecture**: Uses Linux namespaces (PID, IPC, UTS, Network, Mount) and LXC containers with direct LXC & Android Binder kernel interfaces.  
   * **Key Features**: Android 13 (LineageOS base); native Wayland window integration; zero-copy GPU acceleration (`zwp_linux_dmabuf_v1`); shares host CPU, RAM, and GPU for minimal performance overhead.  
   * **Distros**: Arch Linux, Ubuntu, Fedora, Debian, openSUSE, NixOS, Bazzite.
 
-- [![GitHub stars](https://img.shields.io/github/stars/remote-android/redroid-doc?style=social&color=white)](https://github.com/remote-android/redroid-doc/stargazers) **[redroid (Remote-Android)](https://github.com/remote-android/redroid-doc)**  
+- [![GitHub_Stars](https://img.shields.io/github/stars/remote-android/redroid-doc?style=social&color=white)](https://github.com/remote-android/redroid-doc/stargazers) **[redroid (Remote-Android)](https://github.com/remote-android/redroid-doc)**  
   **GPU-accelerated Cloud Android-in-Cloud (AiC) container for Docker, Podman, and Kubernetes.**  
   * **License**: Apache-2.0  
   * **Architecture**: Multi-arch (`arm64` and `amd64`) Docker container images supporting Android versions 8.1 through 16.  
   * **Key Features**: Hardware GPU acceleration (`androidboot.redroid_gpu_mode`); optimized for cloud gaming servers, virtual Android device farms, and automated CI/CD testing pipelines.
 
-- [![GitHub stars](https://img.shields.io/github/stars/anbox/anbox?style=social&color=white)](https://github.com/anbox/anbox/stargazers) **[Anbox](https://github.com/anbox/anbox)** *(Archived)*  
+- [![GitHub_Stars](https://img.shields.io/github/stars/anbox/anbox?style=social&color=white)](https://github.com/anbox/anbox/stargazers) **[Anbox](https://github.com/anbox/anbox)** *(Archived)*  
   **The historical pioneer of container-based Android execution on Linux.**  
   * **License**: GPL-3.0 *(Archived Feb 2024)*  
   * **Legacy Status**: Replaced by Waydroid. Required custom kernel modules (`binder`, `ashmem`) and stuck on Android 7.1 base.
 
 ### 🔀 Translation-Based Approach & Libraries
 
-- [![GitHub stars](https://img.shields.io/github/stars/droidian/libhybris?style=social&color=white)](https://github.com/droidian/libhybris/stargazers) **[libhybris](https://github.com/droidian/libhybris)**  
+- [![GitHub_Stars](https://img.shields.io/github/stars/droidian/libhybris?style=social&color=white)](https://github.com/droidian/libhybris/stargazers) **[libhybris](https://github.com/droidian/libhybris)**  
   **Low-level POSIX-to-Bionic library compatibility wrapper for Linux.**  
   * **License**: Apache-2.0  
   * **Features**: Overrides Android's linker to call Bionic shared libraries (`.so`) directly from standard C library (`glibc`) host applications. Foundation for Sailfish OS and Ubuntu Touch.
 
-- [![GitHub stars](https://img.shields.io/github/stars/android_translation_layer/android_translation_layer?style=social&color=white)](https://gitlab.com/android_translation_layer/android_translation_layer/stargazers) **[Android Translation Layer (ATL)](https://gitlab.com/android_translation_layer/android_translation_layer)**  
+- [![GitHub_Stars](https://img.shields.io/github/stars/android_translation_layer/android_translation_layer?style=social&color=white)](https://gitlab.com/android_translation_layer/android_translation_layer/stargazers) **[Android Translation Layer (ATL)](https://gitlab.com/android_translation_layer/android_translation_layer)**  
   **Translates Android API calls directly to Linux desktop APIs without kernel modules or LXC containers.**  
   * **License**: GPL-3.0 / LGPL-3.0  
   * **Concept**: Operates like WINE for Windows binaries. Converts Android UI primitives directly into GTK components and routes audio/video through PipeWire/Mesa VA-API for ultra-low latency.
 
-- [![GitHub stars](https://img.shields.io/github/stars/yui0/lunaria?style=social&color=white)](https://github.com/yui0/lunaria/stargazers) **[Lunaria](https://github.com/yui0/lunaria)**  
+- [![GitHub_Stars](https://img.shields.io/github/stars/yui0/lunaria?style=social&color=white)](https://github.com/yui0/lunaria/stargazers) **[Lunaria](https://github.com/yui0/lunaria)**  
   **Experimental multi-OS translation layer for Android and iOS apps on Linux.**  
   * **Status**: Experimental (Supports Unity IL2CPP / UE4 APK binaries directly on Linux desktop).
 
-- [![GitHub stars](https://img.shields.io/github/stars/MFDGaming/ancmp?style=social&color=white)](https://github.com/MFDGaming/ancmp/stargazers) **[ancmp](https://github.com/MFDGaming/ancmp)**  
+- [![GitHub_Stars](https://img.shields.io/github/stars/MFDGaming/ancmp?style=social&color=white)](https://github.com/MFDGaming/ancmp/stargazers) **[ancmp](https://github.com/MFDGaming/ancmp)**  
   **Android dynamic library linker and compatibility interface based on Android Jellybean linker.**  
   * **Features**: Provides `android_dlsym` interface for loading Android native dynamic libraries into Windows & Linux executables.
 
 ### ☁️ Cloud Android & OS Ecosystems
 
-- [![GitHub stars](https://img.shields.io/github/stars/google/android-emulator-hypervisor-driver?style=social&color=white)](https://github.com/google/android-emulator-hypervisor-driver/stargazers) **[Google Android Emulator Hypervisor Driver](https://github.com/google/android-emulator-hypervisor-driver)**  
+- [![GitHub_Stars](https://img.shields.io/github/stars/google/android-emulator-hypervisor-driver?style=social&color=white)](https://github.com/google/android-emulator-hypervisor-driver/stargazers) **[Google Android Emulator Hypervisor Driver](https://github.com/google/android-emulator-hypervisor-driver)**  
   **Official hardware-accelerated hypervisor driver for running Android Emulator on Windows with AMD/Intel CPUs.**
 
-- [![GitHub stars](https://img.shields.io/github/stars/BlissRoms/platform_manifest?style=social&color=white)](https://github.com/BlissRoms/platform_manifest/stargazers) **[Bliss OS / BlissRoms](https://github.com/BlissRoms/platform_manifest)**  
+- [![GitHub_Stars](https://img.shields.io/github/stars/BlissRoms/platform_manifest?style=social&color=white)](https://github.com/BlissRoms/platform_manifest/stargazers) **[Bliss OS / BlissRoms](https://github.com/BlissRoms/platform_manifest)**  
   **Open-source x86/x86_64 Android OS designed to run natively on PC hardware and tablets.**
 
 ---
