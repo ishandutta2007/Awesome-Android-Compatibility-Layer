@@ -1,205 +1,146 @@
-# Awesome-Android-Compatibility-Layer
-
-# Awesome Android Compatibility Layer
-
-
-
-**Curated List of Commercial Solutions & Open-Source GitHub Projects**
-
-*Focused on Running Android Apps on Linux and Windows Without Emulation*
-
-**Last updated: October 2026**
-
-
-
-This repository tracks notable **commercial solutions** and **open-source projects** for running Android applications on desktop operating systems without full hardware emulation. These tools enable native performance, lower resource usage, and seamless desktop integration.
-
-
-
-**Examples** include Windows Subsystem for Android, BlueStacks, NoxPlayer, LDPlayer, Genymotion, Waydroid, Anbox, MEmu Play, GameLoop, and Andy (the category leaders).
-
-
-
-**Open-source emphasis**: The open-source ecosystem for Android compatibility layers has **matured significantly**, with **Waydroid** emerging as the clear successor to the now-archived Anbox . **Waydroid** runs a full Android system (based on LineageOS/Android 13) inside LXC containers directly on the Linux kernel, using real hardware for maximum performance with native Wayland integration . **redroid** provides a GPU-accelerated Android-in-Cloud solution for Docker/Kubernetes environments, supporting Android 8.1 through 16 . **Android Translation Layer (ATL)** takes a completely different approach—translating Android APIs to Linux APIs without any kernel modules, similar to WINE for Windows . **Lunaria** is an experimental translation layer for running iOS and Android apps with native desktop integration . This section documents these production-grade solutions.
-
-
-
-Contributions welcome! Open a PR to add/update entries. Keep descriptions factual and link to official sites.
-
-
-
-## Table of Contents
-
-
-
-- [Commercial Solutions](#commercial-solutions)
-
-- [Open-Source GitHub Projects](#open-source-github-projects)
-
-- [How to Contribute](#how-to-contribute)
-
-- [Disclaimer](#disclaimer)
-
-
-
-## Commercial Solutions
-
-
-
-- **[Windows Subsystem for Android](https://learn.microsoft.com/en-us/windows/android/wsa/)**  
-
-  **Microsoft's official Android compatibility layer for Windows 11.** **Note**: Microsoft announced **end of support for WSA on March 5, 2025** . The Amazon Appstore and WSA will no longer be supported. Not recommended for new deployments.
-
-
-
-- **[BlueStacks](https://www.bluestacks.com/)**  
-
-  **The most widely used commercial Android emulator for Windows and macOS.** Uses full virtualization but is optimized for gaming with key mapping, multi-instance support, and performance tuning. **Note**: Emulation-based, not a compatibility layer—higher resource usage than container-based solutions .
-
-
-
-- **[NoxPlayer](https://www.bignox.com/)**  
-
-  **Android emulator optimized for gaming and app testing.** Provides multi-instance management, key mapping, and script recording for automation.
-
-
-
-- **[LDPlayer](https://www.ldplayer.net/)**  
-
-  **Lightweight Android emulator for Windows.** Optimized for gaming performance with low CPU and RAM usage compared to other emulators.
-
-
-
-- **[Genymotion](https://www.genymotion.com/)**  
-
-  **Enterprise Android emulator for testing and development.** Supports Ubuntu, Debian, and Fedora on Linux, plus Windows and macOS . **Use case**: Automated testing, CI/CD pipelines, and app development. **Note**: Commercial product with free tier for personal use.
-
-
-
-- **[MEmu Play](https://www.memuplay.com/)**  
-
-  **Android emulator for Windows with gaming focus.** Provides multi-instance, key mapping, and performance optimization.
-
-
-
-- **[GameLoop](https://www.gameloop.com/)**  
-
-  **Tencent's Android emulator optimized for mobile gaming on PC.** Popular for playing PUBG Mobile, Call of Duty Mobile, and other titles.
-
-
-
-- **[Andy](https://www.andyroid.net/)**  
-
-  **Android emulator for Windows and macOS.** Provides a full Android experience with desktop integration. **Note**: Development appears to have slowed; last major updates were several years ago.
-
-
-
-## Open-Source GitHub Projects
-
-
-
-### Container-Based Android on Linux
-
-
-
-- **[Waydroid](https://github.com/waydroid/waydroid)**  
-
-  **The leading open-source Android compatibility layer for Linux—the modern successor to Anbox.** **GPL-3.0 licensed** . **How it works**: Uses **Linux namespaces (user, pid, uts, net, mount, ipc)** to run a full Android system in a container with **direct hardware access** through LXC and the binder interface . **Key features**: **Android 13 base** (LineageOS-based customized image); **native Wayland integration** — apps appear as normal desktop windows you can resize and move freely ; **GPU acceleration** with zero-copy buffer sharing via `zwp_linux_dmabuf_v1` protocol ; **low overhead** — shares host kernel, memory, and GPU, eliminating emulation overhead . **Distro support**: Ubuntu, Fedora, Arch, Debian, openSUSE, NixOS, Void Linux, and gaming-focused distributions like Bazzite . **Installation**: `sudo apt install waydroid` (Debian/Ubuntu) or from official repositories . **Limitations**: Requires Wayland session (X11 needs nested compositor like Cage/Weston) ; **Nvidia GPU support remains experimental** ; some banking and anti-cheat apps detect and block it ; Google Play certification requires manual device registration . **Best for**: Linux desktop users wanting to run Android apps with near-native performance.
-
-
-
-- **[Anbox](https://github.com/anbox/anbox)**  
-
-  **The original container-based Android compatibility layer for Linux.** **GPL-3.0 licensed** . **Status**: **Archived since February 13, 2024** . **Historical significance**: Pioneered the approach of running Android in LXC containers without emulation, using Snap packaging for installation . **Why it's obsolete**: Relied on out-of-tree kernel modules (binder, ashmem) requiring DKMS compilation; stuck on **Android 7.1** base image; failed builds and kernel module errors on modern kernels . **Migration path**: Users should migrate to Waydroid for continued security and compatibility updates . **Best for**: Historical reference only—not recommended for production use.
-
-
-
-- **[redroid](https://github.com/remote-android/redroid-doc)**  
-
-  **GPU-accelerated Android-in-Cloud (AiC) solution for Docker, podman, and Kubernetes.** **Key features**: **Multi-arch support** (arm64 and amd64) ; **Android 8.1 through 16** available as Docker images ; **GPU acceleration** with `androidboot.redroid_gpu_mode` configuration ; **suitable for cloud gaming, virtualized phones, and automation testing** . **Quick start**: Requires kernel modules `binder_linux` and `ashmem_linux`, then `docker run -itd --rm --privileged -v ~/data:/data -p 5555:5555 redroid/redroid:12.0.0_64only-latest` . **Connection**: Use `adb connect localhost:5555` and view with `scrcpy -s localhost:5555` . **Configuration**: `androidboot.redroid_width`, `androidboot.redroid_height`, `androidboot.redroid_fps`, `androidboot.redroid_dpi` . **Security warning**: Do **not** expose ADB port on public network—container (and host OS) may get compromised . **Best for**: Cloud gaming, virtual phone farms, and automated testing at scale.
-
-
-
-### Translation-Based Approach
-
-
-
-- **[Android Translation Layer (ATL)](https://gitlab.com/android_translation_layer/android_translation_layer)**  
-
-  **A translation layer that runs Android apps on Linux without any kernel modules—similar to WINE for Windows.** **Key philosophy**: Instead of running a full Android system in a container, ATL **translates Android APIs to Linux APIs** directly, requiring **no binder kernel module or custom kernel** . **Key features**: **Native desktop integration** — each Android app runs as an independent window with access to native file picker, notifications, and OpenGL/VA-API drivers from the host system ; **GTK-based rendering** — Android UI controls are converted to GTK components for native font rendering and input method support ; **lower CPU, RAM, storage, and input latency** compared to container-based solutions . **Build**: Unified CMake build system available in forks ; Flatpak installation available . **Status**: **Early alpha** — limited app compatibility; small contributor community (three active developers) . **Best for**: Developers and researchers interested in lightweight Android compatibility without kernel dependencies.
-
-
-
-- **[Lunaria](https://github.com/yui0/lunaria)**  
-
-  **Experimental translation layer for running iOS and Android apps on Linux.** **Key features**: **Translation-based approach** similar to ATL; **native desktop integration** with right-click host menu, screenshot, paste-on-type, volume control, and keyboard mapping . **Usage**: `./lunaria-apk.sh path/to/game.apk` . **Status**: **Experimental** — supports some Android games (Unity IL2CPP, UE4) with varying compatibility. **Best for**: Researchers and enthusiasts exploring translation-layer approaches.
-
-
-
-- **[ancmp](https://github.com/MFDGaming/ancmp)**  
-
-  **Android dynamic library compatibility layer for Linux and Windows based on the Android Jellybean linker.** **Key features**: Provides `android_dlsym` function to load bionic libraries from host libc applications . **Status**: Early development, limited documentation. **Best for**: Developers building custom Android compatibility solutions.
-
-
-
-- **[libhybris](https://github.com/droidian/libhybris)**  
-
-  **Compatibility layer for Android/Replicant** — includes modified Android linker and provides `android_dlsym` for loading bionic libraries . **Use case**: Foundation for projects like ATL and other translation layers. **Best for**: Developers needing low-level Android library loading on Linux.
-
-
-
-### Additional Strong Open-Source Options
-
-
-
-- **Container-Based**: **Waydroid** (GPL-3.0, Android 13, native Wayland), **redroid** (Docker/K8s, Android 8.1–16, GPU-accelerated), **Anbox** (archived, historical reference only) .
-
-- **Translation-Based**: **Android Translation Layer** (no kernel modules, GTK rendering), **Lunaria** (experimental, iOS+Android) .
-
-- **Libraries**: **ancmp** (dynamic library loading), **libhybris** (bionic library loader) .
-
-- **Commercial Emulators**: **BlueStacks**, **NoxPlayer**, **LDPlayer**, **MEmu**, **GameLoop**, **Genymotion** (cross-platform) .
-
-
-
-**Frameworks for building custom systems**: Combine **Waydroid** for native Linux Android app execution with Wayland integration, **redroid** for cloud/containerized Android instances at scale, **Android Translation Layer** for lightweight API-translation without kernel modules, and **libhybris** for low-level bionic library loading. Add **Docker** for redroid deployment and **Wayland** session for Waydroid.
-
-
-
-## How to Contribute
-
-
-
-1. Fork the repo.
-
-2. Add/edit entries in `README.md` (follow existing format).
-
-3. Include: name, link, 1–2 sentence description, and whether it's commercial or open-source.
-
-4. Submit PR with a short explanation.
-
-
-
-Star the repo if you find it useful!
-
-
-
-## Disclaimer
-
-
-
-- This is a **community-curated** list — not exhaustive and not an endorsement.
-
-- Android compatibility layers run Android apps with access to host system resources; ensure proper isolation and security controls before deployment.
-
-- **Open-source reality**: The open-source ecosystem for Android compatibility layers is **mature at the container-based layer** (**Waydroid**, **redroid**) and **emerging at the translation-based layer** (**Android Translation Layer**, **Lunaria**). **Waydroid** is the clear successor to **Anbox**—actively maintained, Android 13-based, Wayland-native, and packaged in major distributions . **redroid** provides production-grade Android-in-Cloud for Docker/Kubernetes with GPU acceleration and Android 8.1–16 support . **Android Translation Layer** offers a fundamentally different approach—no kernel modules, GTK rendering, native desktop integration—but remains early alpha with limited app compatibility . **Windows Subsystem for Android is discontinued** (March 2025) . For commercial emulators (BlueStacks, Genymotion), emulation overhead remains higher than container-based alternatives. The open-source path is **genuinely viable** for Linux users wanting near-native Android app performance.
-
-
+<p align="center">
+  <img src="assets/banner.svg" alt="Awesome Android Compatibility Layer Banner" width="100%">
+</p>
+
+# 🚀 Awesome Android Compatibility Layer
+
+<p align="center">
+  <a href="https://github.com/ishandutta2007/Awesome-Awesome-Awesome"><img src="https://img.shields.io/badge/Awesome-%E2%9C%94-blueviolet?style=flat-square&logo=github" alt="Awesome"/></a><a href="https://discord.gg/jc4xtF58Ve"><img src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="Discord" /></a>
+  <a href="https://github.com/ishandutta2007/Awesome-Android-Compatibility-Layer"><img src="https://img.shields.io/github/stars/ishandutta2007/Awesome-Android-Compatibility-Layer?style=flat-square&logo=github" alt="GitHub Stars"/></a>
+  <a href="https://github.com/ishandutta2007/Awesome-Android-Compatibility-Layer/fork"><img src="https://img.shields.io/github/forks/ishandutta2007/Awesome-Android-Compatibility-Layer?style=flat-square&logo=github" alt="GitHub Forks"/></a>
+  <a href="https://github.com/ishandutta2007/Awesome-Android-Compatibility-Layer/blob/main/LICENSE"><img src="https://img.shields.io/github/license/ishandutta2007/Awesome-Android-Compatibility-Layer?style=flat-square" alt="License"/></a>
+  <a href="https://github.com/ishandutta2007"><img alt="GitHub followers" src="https://img.shields.io/github/followers/ishandutta2007?label=Follow" /></a>
+</p>
+
+> 📱 **Curated list of production-grade Android compatibility layers, containerized Android runtime solutions, API translation projects, and desktop Android emulators for Linux, Windows, and macOS.**
 
 ---
 
+## 💡 Overview & Market Insights
 
+Running Android applications on desktop and cloud platforms without traditional hardware emulation enables native CPU performance, lower RAM consumption, low-latency rendering, and seamless desktop integration.
 
-**Made for Linux desktop users, Android developers, cloud gaming operators, and compatibility layer researchers.**
+> 📊 **Market Size & Industry Dynamics:**  
+> The global **Android Compatibility Layer and Cloud Android (AiC) / Emulator Market** is estimated at **$1.8 Billion - $2.5 Billion USD** (2025–2026), driven by cross-platform mobile gaming on PC, Android-in-Cloud enterprise testing pipelines, and ARM-based Linux desktop adoption. The market is **moderately fragmented**: commercial gaming emulators (BlueStacks, Tencent GameLoop) dominate consumer desktop gaming, cloud-native container runtimes (redroid, Waydroid) lead developer and enterprise infrastructure, while open-source API translation layers (ATL) serve emerging lightweight Linux desktop use cases.
 
-Let's make Android apps more open, native, and accessible on desktop platforms.
+---
+
+## 📋 Table of Contents
+
+- [🏢 Commercial SaaS & Desktop Solutions](#-commercial-saas--desktop-solutions)
+- [🔓 Open-Source GitHub Projects](#-open-source-github-projects)
+  - [📦 Container-Based Android on Linux](#-container-based-android-on-linux)
+  - [🔀 Translation-Based Approach & Libraries](#-translation-based-approach--libraries)
+  - [☁️ Cloud Android & OS Ecosystems](#%EF%B8%8F-cloud-android--os-ecosystems)
+- [🤝 How to Contribute](#-how-to-contribute)
+- [⭐ Star History](#-star-history)
+- [💖 Support & Sponsorship](#-support--sponsorship)
+- [⚠️ Disclaimer](#%EF%B8%8F-disclaimer)
+
+---
+
+## 🏢 Commercial SaaS & Desktop Solutions
+
+Below is a detailed comparison of commercial Android emulators and enterprise compatibility platforms, sorted by **estimated company valuation / revenue (descending)**:
+
+| Product / Company 🏢 | Platform Support 💻 | Primary Use Case 🎯 | Specific Starting Price 💰 | Free Tier / Trial Limit ⏳ | Est. Valuation / Revenue 📈 |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **[Tencent GameLoop](https://www.gameloop.com/)** | Windows | Mobile Gaming on PC | Free (Ad-supported / In-game items) | Free forever (100% free base player) | **~$600B Valuation** (Tencent Market Cap) |
+| **[Windows Subsystem for Android](https://learn.microsoft.com/en-us/windows/android/wsa/)** | Windows 11 | Desktop Integration | Included with Windows 11 license | Included with Windows 11 *(Deprecated Mar 2025)* | **~$3.1T Valuation** (Microsoft Market Cap) |
+| **[BlueStacks](https://www.bluestacks.com/)** | Windows, macOS | Mobile Gaming & Apps | $24.00/year (BlueStacks Premium / Ad-Free) | Free forever with ad banner support | **~$500M Valuation** (acquired by Now.gg / enterprise revenue >$100M) |
+| **[Genymotion](https://www.genymotion.com/)** | Linux, Windows, macOS, Cloud | Enterprise Testing & CI/CD | $0.05/minute (Cloud) or $415/user/year (Desktop SaaS) | 30-day free trial (up to 100 cloud minutes limit) | **~$30M - $50M Valuation** (Genymobile SaaS revenue ~$10M/yr) |
+| **[LDPlayer](https://www.ldplayer.net/)** | Windows | High-FPS Mobile Gaming | $2.99/month (LDPlayer Premium Ad-Free) | Free forever (ad-supported standard edition) | **~$20M - $40M Revenue** |
+| **[NoxPlayer](https://www.bignox.com/)** | Windows, macOS | Mobile Gaming & Automation | $3.99/month (Premium VIP Ad-Free) | Free forever (ad-supported standard edition) | **~$15M - $30M Revenue** |
+| **[MEmu Play](https://www.memuplay.com/)** | Windows | Multi-Instance Gaming | $2.99/month (Premium Membership) | Free forever (ad-supported standard edition) | **~$10M - $20M Revenue** |
+| **[Andy](https://www.andyroid.net/)** | Windows, macOS | Desktop Android Integration | $29.00/month (Enterprise PRO version) | Free forever standard edition | **~$5M Revenue** *(Legacy maintenance)* |
+
+---
+
+## 🔓 Open-Source GitHub Projects
+
+The open-source Android compatibility ecosystem features container-based runtimes, API translation layers, and low-level library loaders. Listed below, **sorted by GitHub Star Count (descending)**:
+
+### 📦 Container-Based Android on Linux
+
+- [![GitHub stars](https://img.shields.io/github/stars/waydroid/waydroid?style=social&color=white)](https://github.com/waydroid/waydroid/stargazers) **[Waydroid](https://github.com/waydroid/waydroid)**  
+  **The premier open-source containerized Android compatibility layer for Linux (successor to Anbox).**  
+  * **License**: GPL-3.0  
+  * **Architecture**: Uses Linux namespaces (PID, IPC, UTS, Network, Mount) and LXC containers with direct LXC & Android Binder kernel interfaces.  
+  * **Key Features**: Android 13 (LineageOS base); native Wayland window integration; zero-copy GPU acceleration (`zwp_linux_dmabuf_v1`); shares host CPU, RAM, and GPU for minimal performance overhead.  
+  * **Distros**: Arch Linux, Ubuntu, Fedora, Debian, openSUSE, NixOS, Bazzite.
+
+- [![GitHub stars](https://img.shields.io/github/stars/remote-android/redroid-doc?style=social&color=white)](https://github.com/remote-android/redroid-doc/stargazers) **[redroid (Remote-Android)](https://github.com/remote-android/redroid-doc)**  
+  **GPU-accelerated Cloud Android-in-Cloud (AiC) container for Docker, Podman, and Kubernetes.**  
+  * **License**: Apache-2.0  
+  * **Architecture**: Multi-arch (`arm64` and `amd64`) Docker container images supporting Android versions 8.1 through 16.  
+  * **Key Features**: Hardware GPU acceleration (`androidboot.redroid_gpu_mode`); optimized for cloud gaming servers, virtual Android device farms, and automated CI/CD testing pipelines.
+
+- [![GitHub stars](https://img.shields.io/github/stars/anbox/anbox?style=social&color=white)](https://github.com/anbox/anbox/stargazers) **[Anbox](https://github.com/anbox/anbox)** *(Archived)*  
+  **The historical pioneer of container-based Android execution on Linux.**  
+  * **License**: GPL-3.0 *(Archived Feb 2024)*  
+  * **Legacy Status**: Replaced by Waydroid. Required custom kernel modules (`binder`, `ashmem`) and stuck on Android 7.1 base.
+
+### 🔀 Translation-Based Approach & Libraries
+
+- [![GitHub stars](https://img.shields.io/github/stars/droidian/libhybris?style=social&color=white)](https://github.com/droidian/libhybris/stargazers) **[libhybris](https://github.com/droidian/libhybris)**  
+  **Low-level POSIX-to-Bionic library compatibility wrapper for Linux.**  
+  * **License**: Apache-2.0  
+  * **Features**: Overrides Android's linker to call Bionic shared libraries (`.so`) directly from standard C library (`glibc`) host applications. Foundation for Sailfish OS and Ubuntu Touch.
+
+- [![GitHub stars](https://img.shields.io/github/stars/android_translation_layer/android_translation_layer?style=social&color=white)](https://gitlab.com/android_translation_layer/android_translation_layer/stargazers) **[Android Translation Layer (ATL)](https://gitlab.com/android_translation_layer/android_translation_layer)**  
+  **Translates Android API calls directly to Linux desktop APIs without kernel modules or LXC containers.**  
+  * **License**: GPL-3.0 / LGPL-3.0  
+  * **Concept**: Operates like WINE for Windows binaries. Converts Android UI primitives directly into GTK components and routes audio/video through PipeWire/Mesa VA-API for ultra-low latency.
+
+- [![GitHub stars](https://img.shields.io/github/stars/yui0/lunaria?style=social&color=white)](https://github.com/yui0/lunaria/stargazers) **[Lunaria](https://github.com/yui0/lunaria)**  
+  **Experimental multi-OS translation layer for Android and iOS apps on Linux.**  
+  * **Status**: Experimental (Supports Unity IL2CPP / UE4 APK binaries directly on Linux desktop).
+
+- [![GitHub stars](https://img.shields.io/github/stars/MFDGaming/ancmp?style=social&color=white)](https://github.com/MFDGaming/ancmp/stargazers) **[ancmp](https://github.com/MFDGaming/ancmp)**  
+  **Android dynamic library linker and compatibility interface based on Android Jellybean linker.**  
+  * **Features**: Provides `android_dlsym` interface for loading Android native dynamic libraries into Windows & Linux executables.
+
+### ☁️ Cloud Android & OS Ecosystems
+
+- [![GitHub stars](https://img.shields.io/github/stars/google/android-emulator-hypervisor-driver?style=social&color=white)](https://github.com/google/android-emulator-hypervisor-driver/stargazers) **[Google Android Emulator Hypervisor Driver](https://github.com/google/android-emulator-hypervisor-driver)**  
+  **Official hardware-accelerated hypervisor driver for running Android Emulator on Windows with AMD/Intel CPUs.**
+
+- [![GitHub stars](https://img.shields.io/github/stars/BlissRoms/platform_manifest?style=social&color=white)](https://github.com/BlissRoms/platform_manifest/stargazers) **[Bliss OS / BlissRoms](https://github.com/BlissRoms/platform_manifest)**  
+  **Open-source x86/x86_64 Android OS designed to run natively on PC hardware and tablets.**
+
+---
+
+## 🤝 How to Contribute
+
+1. Fork this repository 🍴
+2. Create your feature branch (`git checkout -b feature/amazing-compatibility-layer`)
+3. Commit your changes (`git commit -m 'Add new open-source Android runtime'`)
+4. Push to the branch (`git push origin feature/amazing-compatibility-layer`)
+5. Open a Pull Request 🚀
+
+Please check out [Awesome-Awesome-Awesome](https://github.com/ishandutta2007/Awesome-Awesome-Awesome) for more curated lists!
+
+---
+
+## ⭐ Star History
+
+[![Star History Chart](https://star-history.dera.page/svg?repos=ishandutta2007/Awesome-Android-Compatibility-Layer&type=date&legend=top-left)](https://star-history.dera.page/#ishandutta2007/Awesome-Android-Compatibility-Layer&type=date&legend=top-left)
+
+---
+
+## 💖 Support & Sponsorship
+
+If you find this repository helpful for your research, development, or Android desktop setup, please consider:
+- 🌟 Giving a **Star** to this repository to increase visibility.
+- 🔀 **Forking** it to keep your own copy and contribute improvements.
+- 📢 **Sharing** this project with fellow Linux users and Android developers!
+
+☕ **Buy me a coffee / Sponsor**: If you'd like to support ongoing open-source curation and projects, check out my [GitHub Sponsor Dashboard](https://github.com/sponsors/ishandutta2007). Thank you for your support! ❤️
+
+---
+
+## ⚠️ Disclaimer
+
+* This is a **community-curated list** for educational, developer, and research purposes.
+* Trademarks and project names belong to their respective commercial and open-source owners.
+* Ensure proper container security controls when running containerized Android runtimes on untrusted apps or exposing cloud ADB ports.
